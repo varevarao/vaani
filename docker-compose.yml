@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - published: 8081
+        target: 8080
+        mode: host
+    volumes:
+      - .:/vaani
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile.nginx
+    links:
+      - api
+    ports:
+      - published: 8080
+        target: 80
+        mode: host
+    volumes:
+      - ./nginx/reverse-proxy.conf:/etc/nginx/conf.d/default.conf
