@@ -1,4 +1,5 @@
 FROM nginx:latest
+LABEL maintainer="Tanay Upadhyaya"
 
 RUN apt update && apt install -y curl vim
 
