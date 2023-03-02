@@ -1,0 +1,32 @@
+# Dockerfile development version
+FROM node:gallium-bullseye-slim
+LABEL maintainer="Tanay Upadhyaya"
+
+# Install system dependencies
+RUN apt update && apt install -y build-essential python3 python-is-python3 curl vim
+
+# Set environment variable
+ENV HOME_DIR /vaani
+ENV NODE_ENV development
+
+# Default directory
+WORKDIR $HOME_DIR
+
+# Install application dependencies
+# RUN npm install -g webpack-dev-server
+# RUN npm install -g webpack-cli
+# RUN npm install --save-dev webpack-merge
+COPY package.json .
+RUN yarn install
+
+# # Copy application code
+# COPY . .
+
+# Start server
+CMD yarn start
+
+# Add a script to be executed every time the container starts.
+COPY entrypoint.sh .
+RUN chmod +x $HOME_DIR/entrypoint.sh
+ENTRYPOINT $HOME_DIR/entrypoint.sh
+
